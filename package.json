@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/Jcanno/node-search/issues"
   },
-  "homepage": "https://github.com/Jcanno/node-search#readme"
+  "homepage": "https://github.com/Jcanno/node-search#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.16.4",
+    "superagent": "^5.0.2"
+  }
 }
