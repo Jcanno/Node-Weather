@@ -1,63 +1,47 @@
 const express = require('express')
 const app = express()
+const cheerio = require('cheerio')
+const superagent= require('superagent')
+const xlsx = require('node-xlsx')
+
+// 获取excel sheet1表格
+let sheet = xlsx.parse('./id-city.xlsx')[0].data;
+let res = sheet.filter(item => {
+  if(item[2].includes("宁波")){
+    return item
+  }
+});
+console.log(res)
 
 app.listen(3000, () => {
   console.log('App listening on port 3000!');
 });
 
-// 引入所需要的第三方包
-const superagent= require('superagent');
-
-let hotNews = [];                                // 热点新闻
-let localNews = [];                              // 本地新闻
-
-
-
-/**
- * index.js
- * [description] - 抓取热点新闻页面
- */
-// 引入所需要的第三方包
-const cheerio = require('cheerio');
-
-let getHotNews = (res) => {
+let getHotNews = (resb) => {
   let hotNews = [];
-  // 访问成功，请求http://news.baidu.com/页面所返回的数据会包含在res.text中。
-  
-  /* 使用cheerio模块的cherrio.load()方法，将HTMLdocument作为参数传入函数
-     以后就可以使用类似jQuery的$(selectior)的方式来获取页面元素
-   */
-  let $ = cheerio.load(res.text);
-
+  let $ = cheerio.load(resb.text);
   // 找到目标数据所在的页面元素，获取数据
-  $('div#pane-news ul li a').each((idx, ele) => {
-    // cherrio中$('selector').each()用来遍历所有匹配到的DOM元素
-    // 参数idx是当前遍历的元素的索引，ele就是当前便利的DOM元素
-    let news = {
-      title: $(ele).text(),        // 获取新闻标题
-      href: $(ele).attr('href')    // 获取新闻网页链接
-    };
-    hotNews.push(news)              // 存入最终结果数组
-  });
+  $('.job-primary .info-primary .name a .job-title').each((index, ele) => {
+    // console.log($(ele).text());
+    //   let news = {
+  //     title: $(ele).text(),        // 获取新闻标题
+  //     // href: $(ele).attr('href')    // 获取新闻网页链接
+  //   };
+  })
   return hotNews
 };
 
+superagent.get('https://www.zhipin.com/c101210100-p100101/').end((err, resb) => {
+  if (err) {
+    // 如果访问失败或者出错，会这行这里
+    console.log(`热点新闻抓取失败 - ${err}`)
+  } else {
+   hotNews = getHotNews(resb)
+  
+  }
+});
+
 
 app.get('/', (req, res) => {
-  /**
-   * index.js
-   * [description] - 使用superagent.get()方法来访问百度新闻首页
-   */
-  superagent.get('http://news.baidu.com/').end((err, resb) => {
-    if (err) {
-      // 如果访问失败或者出错，会这行这里
-      console.log(`热点新闻抓取失败 - ${err}`)
-    } else {
-     // 访问成功，请求http://news.baidu.com/页面所返回的数据会包含在res
-     // 抓取热点新闻数据
-     hotNews = getHotNews(resb)
-     res.json(hotNews)
-    
-    }
-  });
+  
 });

@@ -20,7 +20,9 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.16.4",
+    "node-xlsx": "^0.14.1",
     "nodemon": "^1.18.11",
-    "superagent": "^5.0.2"
+    "superagent": "^5.0.2",
+    "xlsx": "^0.14.2"
   }
 }
