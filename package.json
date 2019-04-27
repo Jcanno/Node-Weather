@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js & http-server"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.16.4",
+    "http-server": "^0.11.1",
     "node-xlsx": "^0.14.1",
     "nodemon": "^1.18.11",
     "superagent": "^5.0.2",

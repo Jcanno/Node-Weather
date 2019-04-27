@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <link rel="stylesheet" href="./jquery/jquery-ui.min.css">
+    <!-- 引入 echarts.js -->
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts-en.common.min.js"></script>
+    <script src="./jquery/jquery-3.3.1.min.js"></script>
+    <!-- 引入jQuery UI的js文件 -->
+    <script type="text/javascript" src="./jquery/jquery-ui.min.js" ></script>
+
+</head>
+<body>
+    
+    <input id="search" type="text" placeholder="输入城市或地区(可模糊搜索)" >
+    <button id="render">生成天气图表</button>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">   
+      var input = $("#search")[0];
+      input.oninput = function(){
+        console.log($("#search").val());
+        
+        $("#search").autocomplete({
+          delay: 500,
+	        source: function( request, response ) {
+            if($("#search").val() != ""){
+              $.ajax({
+		     		    url : "http://127.0.0.1:3000/search?area=" + $("#search").val(),
+		     		    type : "get",		       			
+	              success: function(data) {
+		              response( $.map( data, function( item ) {
+			              return {
+			                label: item.label,
+			                value: item.label
+			              }
+		              }));
+                },
+              })
+            }
+          }
+        })
+      }
+      
+      $('#render')[0].onclick = function(){
+        console.log($("#search").val());
+        
+        if($("#search").val() != ""){
+          $.ajax({
+            url: "http://127.0.0.1:3000/weather?cityname=" + $("#search").val(),
+            type: "get",
+            success: function(data){
+              // 基于准备好的dom，初始化echarts实例
+              var myChart = echarts.init($('#main')[0]);
+                // 指定图表的配置项和数据
+              option = {
+                title: {
+                  text: $("#search").val() + '天气情况',
+                },
+                tooltip: {
+                  trigger: 'axis'
+                },
+                legend: {
+                  data:['最高气温', '最低气温']
+                },
+                toolbox: {
+                  show: true,
+                  feature: {
+                      magicType: {show: true, type: ['stack', 'tiled']},
+                      saveAsImage: {show: true}
+                  }
+                },
+                xAxis: {
+                  type: 'category',
+                  // boundaryGap: false,
+                  data: data.date
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    name: '最高气温',
+                    type: 'line',
+                    smooth: true,
+                    data: data.max
+                },
+                {
+                    name: '最低气温',
+                    type: 'line',
+                    smooth: true,
+                    data: data.min
+                }]
+              };
+              // 使用刚指定的配置项和数据显示图表。
+              myChart.setOption(option);
+            }	
+          })
+        }
+      }
+    
+    </script>
+</body>
+</html>
