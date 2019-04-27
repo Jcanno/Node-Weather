@@ -64,14 +64,17 @@ app.get('/weather', (req, res) => {
         let $ = cheerio.load(response.text);
         // 最高温度
         let max = [];
-        // 找到目标数据所在的页面元素，获取数据
-        $('ul li .tem span').each((index, ele) => {
-          max.push(parseInt($(ele).text()))
-        })
-        // 最低温度
         let min = [];
-        $('ul li .tem i').each((index, ele) => {
-          min.push(parseInt($(ele).text()))
+        // 找到目标数据所在的页面元素，获取数据
+        $('ul li .tem').each((index, ele) => {
+          let text = $(ele).text();
+          if(text.includes('/')){
+            max.push(parseInt(text.split('/')[0]));
+            min.push(parseInt(text.split('/')[1]));
+          }else{
+            max.push(null);
+            min.push(parseInt(text));
+          }     
         })
         // 日期
         let date = [];
