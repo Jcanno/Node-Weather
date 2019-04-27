@@ -66,7 +66,7 @@ app.get('/weather', (req, res) => {
         let max = [];
         // 找到目标数据所在的页面元素，获取数据
         $('ul li .tem span').each((index, ele) => {
-          max.push($(ele).text())
+          max.push(parseInt($(ele).text()))
         })
         // 最低温度
         let min = [];
