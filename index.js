@@ -91,5 +91,5 @@ app.get('/weather', (req, res) => {
     });
   }else{
     res.status(404).json();
-  }
+  } 
 });
