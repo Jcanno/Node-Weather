@@ -86,23 +86,10 @@ app.get('/weather', (req, res) => {
           min,
           date,
           max
-        })
-        // $('.job-primary .info-primary .name a .job-title').each((index, ele) => {
-          // console.log($(ele).text());
-          //   let news = {
-        //     title: $(ele).text(),        // 获取新闻标题
-        //     // href: $(ele).attr('href')    // 获取新闻网页链接
-        //   };
-        // })
-      
+        })     
       }
     });
-
   }else{
     res.status(404).json();
   }
-  
-  
-  
-  
 });
