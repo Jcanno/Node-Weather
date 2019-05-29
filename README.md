@@ -1,11 +1,11 @@
-# node-weather
+# Node-Weather
 
 ![image](https://github.com/Jcanno/node-weather/blob/master/weather.gif)   
 
 ### 下载运行
 
 ```
-git clone https://github.com/Jcanno/node-weather.git
+git clone https://github.com/Jcanno/Node-Weather.git
 cd node-weather
 // 安装依赖
 npm install
